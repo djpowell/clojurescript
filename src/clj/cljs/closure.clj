@@ -705,9 +705,15 @@
                                (str (build-provides (-provides js)) (slurp url))
                                (io/input-stream url)))))
 
+(defn log
+  [& args]
+  (binding [*out* *err*]
+    (apply prn args)))
+
 (defn optimize
   "Use the Closure Compiler to optimize one or more JavaScript files."
   [opts & sources]
+  (log "ocount" (map javascript-name sources))
   (let [closure-compiler (make-closure-compiler)
         externs (load-externs opts)
         compiler-options (make-options opts)
@@ -736,7 +742,8 @@
                                            (.getPath source-url)
                                            (if-let [^URL url (:url source)]
                                              (.getPath url))))
-                                    sources))))]
+				       sources))))]
+	      (log "mergedk" (keys merged))
               (if sources
                 (let [source (first sources)]
                   (recur

@@ -153,6 +153,7 @@
       [] lines)))
 
 (defn relativize-path [path {:keys [output-dir relpaths]}]
+;  (prn "relpaths" path " : " relpaths)
   (cond
     (re-find #"\.jar!/" path)
     (str output-dir (second (string/split path #"\.jar!")))    
